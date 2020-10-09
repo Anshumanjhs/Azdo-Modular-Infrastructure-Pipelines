@@ -25,11 +25,6 @@ We also recommended watching our video for deployment instructions here: [demo v
 
 And if you have any questions feel free to reach out directly to the team. 
 
-The status of dev main: 
-[![Build Status](https://dev.azure.com/csebraveheart/Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines/_apis/build/status/Preprovisioning-pipeline?branchName=master)](https://dev.azure.com/csebraveheart/Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines/_build/latest?definitionId=3&branchName=master)
-The status of staging main:
- 
-
 ### Contents of this repository include a number of patterns for building with Azure Devops:  
 
 - Deploying idempotent network configuration using terraform and ansible: [network module](src/modules/network/)
