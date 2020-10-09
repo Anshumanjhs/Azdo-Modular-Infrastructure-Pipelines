@@ -6,7 +6,6 @@
 
 ### Staging Build Status 
 [![Build Status](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_apis/build/status/Pre-provisioning?branchName=staging)](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_build/latest?definitionId=36&branchName=staging)
-- *status badge won't show until with make the devops project public, but the link works*
 - ^ *This would be a customer's first edit* 
 
   
