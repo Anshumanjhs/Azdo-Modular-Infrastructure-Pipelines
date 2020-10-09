@@ -2,10 +2,10 @@
 
 ### Dev Build Status 
 
-[![Build Status](https://dev.azure.com/csebraveheart/Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines/_apis/build/status/preprovisioning?branchName=main)](https://dev.azure.com/csebraveheart/Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines/_build/latest?definitionId=20&branchName=main)
+[![Build Status](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_apis/build/status/Pre-provisioning?branchName=main)](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_build/latest?definitionId=36&branchName=main)
 
 ### Staging Build Status 
-[![Build Status](https://dev.azure.com/csebraveheart/staging-environment-azdo-samples/_apis/build/status/Pre-provisioning?branchName=main)](https://dev.azure.com/csebraveheart/staging-environment-azdo-samples/_build/latest?definitionId=24&branchName=main)
+[![Build Status](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_apis/build/status/Pre-provisioning?branchName=staging)](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_build/latest?definitionId=36&branchName=staging)
 - *status badge won't show until with make the devops project public, but the link works*
 - ^ *This would be a customer's first edit* 
 
