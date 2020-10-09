@@ -1,0 +1,10 @@
+---
+
+# 
+script: | 
+    docker compose 
+    docker run -it 
+env: 
+    CLIENT_PASSWORD: $(env.client_password)
+    SUBSCRIPTION: 
+    RESOURCE_GROUP: 

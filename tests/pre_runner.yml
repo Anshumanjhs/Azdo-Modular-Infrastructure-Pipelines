@@ -1,0 +1,38 @@
+---
+# - name: Check env parameters
+#   include: check_env_params.yml
+
+- name: Pre-runner validation steps
+  any_errors_fatal: true
+  hosts:
+      - localhost
+  gather_facts: true
+
+  vars:
+      - ansible_win_rm_script: "{{ lookup('env','FILE_URL_ANSIBLE_WINRM_SCRIPT') }}"
+      - core_storage_account_name:
+            "{{ lookup('env','CORE_STORAGE_ACCOUNT_NAME') }}"
+            # Verify subscription connection
+            # az login
+            # assert az list subscriptions contains creator privelige
+            # Verify resource availability
+            # assert access to dicom media installation resources
+
+  tasks:
+      - name: Get all env
+        debug:
+            msg: "{{ ansible_env }}"
+
+      - name: assert env vars
+        assert:
+            that:
+                - "lookup('env', 'ARM_CLIENT_ID')"
+                - "lookup('env', 'ARM_CLIENT_SECRET')"
+                - "lookup('env', 'ARM_SUBSCRIPTION_ID')"
+                - "lookup('env', 'ARM_TENANT_ID')"
+                - "lookup('env', 'CORE_RESOURCE_GROUP_NAME')"
+                - "lookup('env', 'CORE_STORAGE_ACCOUNT_NAME')"
+
+      - name: "Verify az account availability"
+        script: |
+            az account list

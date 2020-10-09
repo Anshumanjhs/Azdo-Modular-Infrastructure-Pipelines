@@ -1,0 +1,100 @@
+---
+# - name: Check env parameters
+#   include: check_env_params.yml
+
+- name: build a basic windows machine
+  any_errors_fatal: true
+  hosts:
+    - localhost
+  gather_facts: true
+
+  pre_tasks: 
+    - name: generate new module ID if not defined 
+      set_fact: 
+        module_state_id: "{{ 999 | random }}"
+      when: module_id == "" 
+
+  vars:
+    - ansible_win_rm_script: "{{ lookup('env','FILE_URL_ANSIBLE_WINRM_SCRIPT') | default('https://corestorageaccountwus.file.core.windows.net/installationmedia/ConfigureRemotingForAnsible.ps1?sp=rl&st=2020-10-06T18:05:30Z&se=2024-10-22T18:05:00Z&sv=2019-12-12&sig=GP9Qxx543RGCKru2T9uJ8wLjTOo0qCOdzt4rehex%2F%2BM%3D&sr=f') }}"
+    - core_storage_account_name: "{{ lookup('env','CORE_STORAGE_ACCOUNT_NAME') }}"
+    - storage_access_key: "{{ lookup('env', 'ARM_ACCESS_KEY') | mandatory }}"   
+    - storage_account_name: "{{ lookup('env', 'STORAGE_ACCOUNT_NAME') | mandatory }}"   
+    - terraform_vars:
+        subscription_id: "{{ lookup('env','ARM_SUBSCRIPTION_ID') | mandatory }}"
+        client_id: "{{ lookup('env','ARM_CLIENT_ID') | mandatory }}"
+        client_secret: "{{ lookup('env','ARM_CLIENT_SECRET') | mandatory }}"
+        tenant_id: "{{ lookup('env','ARM_TENANT_ID') | mandatory }}"
+        resource_group_name: "{{ resource_group_name | mandatory }}"  
+        location: "{{ location | mandatory }}" 
+        admin_username: "{{ username | mandatory }}"   
+        admin_password: "{{ password | mandatory }}" 
+        subnet_name: "{{ subnet_name | mandatory }}"  
+        vnet_name: "{{ vnet_name | mandatory }}"  
+        machine_name: "{{ machine_name | mandatory }}" 
+        machine_size: "{{ machine_size | mandatory }}"        
+        environment: dev 
+        tag_module_id: "{{ module_state_id | default(module_id) }}"
+        tag_module_type: windows_worker
+
+  tasks: 
+    - name: peek terraform_vars
+      debug:
+        msg: "{{ terraform_vars }}"
+
+    - name: set terraform working directory
+      set_fact:
+        terraform_dir: "../../terraform/basic_windows"
+
+    - name: apply tf infrastructure
+      terraform:
+        project_path: "{{ terraform_dir }}"
+        state: present
+        force_init: true
+        variables: "{{ terraform_vars }}"
+        backend_config:
+          key: "{{ terraform_vars.tag_module_type + terraform_vars.tag_module_id + '.tfstate' }}"
+          container_name: state
+          storage_account_name: "{{ storage_account_name }}"
+          access_key: "{{ storage_access_key }}"
+      register: new_resources     
+
+    - name: Add host to new_windows_machine group
+      add_host:
+        hostname: "{{ item }}"  # 10.0.0.4
+        ansible_user: "{{  admin_username }}" # "{{ lookup('env','GENERAL_ADMIN_USERNAME') }}"
+        ansible_password: "{{ admin_password }}" #  "{{ lookup('env','GENERAL_ADMIN_PASSWORD') }}"
+        ansible_connection: winrm
+        ansible_winrm_transport: basic
+        ansible_winrm_server_cert_validation: ignore
+        group: new_windows_machine
+      with_items: "{{ new_resources.outputs.public_ip_address.value }}"
+
+- name: Setup Viewer machine Worker
+  hosts:
+    - new_windows_machine
+  any_errors_fatal: true
+  gather_facts: true
+
+  vars:
+    # core_storage_account_sas: "{{ hostvars['localhost']['core_storage_account_sas'] }}"
+    # service_account_ad_username: "{{ lookup('env','SERVICE_ACCOUNT_AD_USERNAME') }}"
+    # service_account_ad_password: "{{ lookup('env','SERVICE_ACCOUNT_AD_PASSWORD') }}"
+    # service_account_local_group_name: "{{ lookup('env','SERVICE_ACCOUNT_LOCAL_GROUP_NAME') }}"
+
+  tasks:
+    # - name: Join Domain
+    #   win_domain_membership:
+    #     dns_domain_name: "{{ lookup('env','AD_DOMAIN_DNS_NAME') }}"
+    #     domain_admin_user: "{{ lookup('env','AD_DOMAIN_ADMIN_USER') }}"
+    #     domain_admin_password: "{{ lookup('env','AD_DOMAIN_ADMIN_PASSWORD') }}"
+    #     state: domain
+    #   register: domain_state
+
+    # - name: Reboot
+    #   win_reboot:
+    #   when: domain_state.reboot_required
+
+    - name: Install git
+      win_chocolatey:
+        name: git
+        state: present
