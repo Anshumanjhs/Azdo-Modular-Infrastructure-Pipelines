@@ -1,4 +1,4 @@
-# Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines
+# Azdo-Modular-Infrastructure-Pipelines
 
 ### Main Build Status 
 
@@ -21,7 +21,7 @@ To deploy the solution your team will need an Azure Devops organization an Azure
 
 To add modules to your solution, create a pipeline in Azure Devops and point to the already existing yaml in each module. (prefixed with 'azdo-' as a convention)
 
-We also recommended watching our video for deployment instructions here: [demo video](https://msit.microsoftstream.com/video/2d40a1ff-0400-9fb2-790d-f1eb04dc9df9)
+We also recommended watching our video for deployment instructions here: [private demo video](https://msit.microsoftstream.com/video/2d40a1ff-0400-9fb2-790d-f1eb04dc9df9)
 
 And if you have any questions feel free to reach out directly to the team. 
 
