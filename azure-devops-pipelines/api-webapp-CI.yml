@@ -4,7 +4,7 @@
 trigger:
   branches:
     include:
-      - master
+      - main
 
 # Paths are always specified relative to the root of the repository.
   paths:
@@ -35,6 +35,3 @@ steps:
     azureContainerRegistry: $(azureContainerRegistry)
     command: 'Push an image'
     imageName: '$(azureContainerRegistry)/web-api:latest'
-
-
-
