@@ -33,7 +33,7 @@ And if you have any questions feel free to reach out directly to the team.
 
 - Creating a an ubuntu vm with terraform and configuring post deployment with ansible: [ubuntu worker](src/modules/ubuntu_worker)
 
-- Creating a new windows vm with terraform, configuring winrm, and configuring post deployment with ansible: [windows machine ready for config](/src/modules/windows-viewing-machine-module)
+- Creating a new windows vm with terraform, configuring winrm, and configuring post deployment with ansible: [windows machine ready for config](src/modules/windows_worker)
 
 - Measuring network throughput on the azure backbone with go: [network tests](src/network-tests)
 
