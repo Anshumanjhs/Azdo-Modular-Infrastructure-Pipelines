@@ -8,15 +8,11 @@ variable "prefix" {
   type        = string
 }
 
-variable "resource_group_name" {
-  description = "Name of Preexisting Resource Group"
-  type        = string
-}
-
-variable "resource_group_location" {
+variable "location" {
   description = "Name of Preexisting Resource Group Location"
   type        = string
 }
+
 
 variable "admin_username" {
   description = "Admin user for the agent"
@@ -28,8 +24,8 @@ variable "admin_password" {
   type        = string
 }
 
-variable "tag_module_id" { 
-    description = "id to track state of module deployment"
-    type        = string 
-    default =  "1" 
+variable "tag_module_id" {
+  description = "id to track state of module deployment"
+  type        = string
+  default     = "1"
 }

@@ -19,9 +19,23 @@ parameters:
   - name: ado_org_service_url
     displayName: ado org service url eg.-  https://dev.azure.com/csebraveheart
     default: https://dev.azure.com/csebraveheart
-  - name: ado_agents_count
-    displayName: Number of devops agent's you'd like to provision with core 
-    default: 1 
+  - name: admin_username
+    displayName: Admin Username for Ubuntu VM 
+    type: string
+    default: "braveheart"
+  - name: admin_password
+    displayName: Admin Password for Ubuntu VM 
+    type: string
+    default: "P@ssword1234!"
+    # ANSIBLE PARAMS
+  - name: ansible_verbosity_level
+    displayName: Ansible verbosity level
+    type: string
+    default: "-vv"
+    values:
+      - "-v"
+      - "-vv"
+      - "-vvv"
 
 # Using a Variable Group as the Secured Network will be applied post the creation of core 
 variables:
@@ -67,4 +81,39 @@ steps:
     TF_VAR_ado_org_service_url: ${{ parameters.ado_org_service_url }}
     TF_VAR_location: ${{ parameters.location }}
 
+- script: | 
+    az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t $ARM_TENANT_ID
+  displayName: "AZ Login"
+  env: 
+    ARM_TENANT_ID: $(ARM-TENANT-ID)
+    ARM_CLIENT_ID: $(ARM-CLIENT-ID)
+    ARM_CLIENT_SECRET: $(ARM-CLIENT-SECRET)
+    
+- script: | 
+    chmod +x ./ubuntu_host_setup.sh
+    ./ubuntu_host_setup.sh
+  workingDirectory: $(System.DefaultWorkingDirectory)/setup
+  displayName: "Install dependencies for Agent Setup"
+  env: 
+    AGENT_ALLOW_RUNASROOT: 1
 
+- script: |
+    ansible-playbook \
+      $(Agent.BuildDirectory)/s/src/modules/ubuntu_azdo_agent/build_infrastructure.yml ${{ parameters.ansible_verbosity_level }} 
+  displayName: "Create and Configure azdo agent"
+  continueOnError: false
+  env:
+    ANSIBLE_HOST_KEY_CHECKING: false
+    ANSIBLE_STDOUT_CALLBACK: debug
+    ARM_CLIENT_ID: $(ARM-CLIENT-ID)
+    ARM_CLIENT_SECRET: $(ARM-CLIENT-SECRET)
+    ARM_SUBSCRIPTION_ID: $(ARM-SUBSCRIPTION-ID)
+    ARM_TENANT_ID: $(ARM-TENANT-ID)
+    ARM_ACCESS_KEY: $(ARM-ACCESS-KEY)
+    DEVOPS_AGENT_PAT : $(DEVOPS-AGENT-PAT)
+    STORAGE_STATE_CONTAINER_NAME: $(STORAGE-STATE-CONTAINER-NAME)
+    STORAGE_ACCOUNT_NAME: $(STORAGE-ACCOUNT-NAME)
+    TF_VAR_prefix: ${{ parameters.prefix }}
+    TF_VAR_location: ${{ parameters.location}}
+    TF_VAR_admin_username: ${{ parameters.admin_username }}
+    TF_VAR_admin_password: ${{ parameters.admin_password }}

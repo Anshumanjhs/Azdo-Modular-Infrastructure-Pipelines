@@ -1,5 +1,6 @@
 /*
 Creates: 
+- Resource Group for Core Network
 - Core Virtual Network 
 - Core Default Subnet
 - Ubuntu VM to be used as Azure DevOps Build Agent  
@@ -13,34 +14,42 @@ provider "azurerm" {
   features {}
 }
 
+
+#Create resource group for web resources
+resource "azurerm_resource_group" "main" {
+  name     = "core-${var.tag_module_id}-network"
+  location = var.location
+}
+
+
 resource "azurerm_virtual_network" "main" {
-  name                = "${var.prefix}${var.tag_module_id}-core-network"
+  name                = "core-${var.tag_module_id}-network"
   address_space       = ["10.0.0.0/16"]
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 resource "azurerm_subnet" "default" {
   name                 = "default"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefix       = "10.0.2.0/24"
 }
 
 resource "azurerm_public_ip" "main" {
-  name                = "${var.prefix}${var.tag_module_id}-public-ip"
-  resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
+  name                = "public-${var.tag_module_id}-ip"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "main" {
-  name                = "${var.prefix}${var.tag_module_id}-core-nic"
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  name                = "core-${var.tag_module_id}-nic"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
 
   ip_configuration {
-    name                          = "${var.prefix}${var.tag_module_id}-core-ip"
+    name                          = "core-${var.tag_module_id}-ip"
     subnet_id                     = azurerm_subnet.default.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.main.id
@@ -48,9 +57,9 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "azurerm_virtual_machine" "main" {
-  name                  = "${var.prefix}${var.tag_module_id}-azdoagent"
-  location              = var.resource_group_location
-  resource_group_name   = var.resource_group_name
+  name                  = "azdoagent-${var.tag_module_id}"
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
   network_interface_ids = [azurerm_network_interface.main.id]
   vm_size               = "Standard_DS1_v2"
 
@@ -67,7 +76,7 @@ resource "azurerm_virtual_machine" "main" {
     version   = "latest"
   }
   storage_os_disk {
-    name              = "${var.prefix}${var.tag_module_id}-osdisk"
+    name              = "osdisk-${var.tag_module_id}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
@@ -83,8 +92,8 @@ resource "azurerm_virtual_machine" "main" {
   }
 }
 
-data "azurerm_public_ip" "waited_public_ip" { 
-  name = azurerm_public_ip.main.name
-  resource_group_name = var.resource_group_name
-  depends_on = [azurerm_virtual_machine.main]
+data "azurerm_public_ip" "waited_public_ip" {
+  name                = azurerm_public_ip.main.name
+  resource_group_name = azurerm_resource_group.main.name
+  depends_on          = [azurerm_virtual_machine.main]
 }
