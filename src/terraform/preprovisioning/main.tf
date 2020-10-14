@@ -42,7 +42,6 @@ resource "azurerm_resource_group" "main" {
 #Import azuredevops project via 
 data "azuredevops_project" "main" {
   project_name = var.ado_project_name
-  state        = "wellFormed"
 }
 
 #Initialize local variables for azuredevops project_id and web resource naming conventions
