@@ -1,6 +1,6 @@
 # CI pipeline for API WebApp
 # Uses a library for the variables
-
+# TODO: Create variable group in preprovisioning to support Web Api
 trigger:
   branches:
     include:
