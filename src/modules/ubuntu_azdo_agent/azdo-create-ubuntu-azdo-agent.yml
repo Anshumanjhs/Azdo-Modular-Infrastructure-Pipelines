@@ -8,25 +8,22 @@ trigger: none
 
 parameters:
   # Terraform Params
-  - name: PREFIX
-    displayName: PREFIX
+  - name: prefix
+    displayName: Unique Tag for Naming Resources
     type: string
-  - name: RESOURCE_GROUP_NAME
-    displayName: RESOURCE_GROUP_NAME
+  - name: resource_group_location
+    displayName: Location for all resources 
     type: string  
-  - name: RESOURCE_GROUP_LOCATION
-    displayName: RESOURCE_GROUP_LOCATION
-    type: string  
-  - name: ADMIN_USERNAME
-    displayName: ADMIN_USERNAME
+  - name: admin_username
+    displayName: Admin Username for Ubuntu VM
     type: string
     default: "braveheart"
-  - name: ADMIN_PASSWORD
-    displayName: ADMIN_PASSWORD
+  - name: admin_password
+    displayName: Admin Password for Ubuntu VM 
     type: string
     default: "Password1234!"
     # ANSIBLE PARAMS
-  - name: ANSIBLE_VERBOSITY_LEVEL
+  - name: ansible_verbosity_level
     displayName: Ansible verbosity level
     type: string
     default: "-vv"
@@ -70,7 +67,7 @@ jobs:
       - script: |
           ansible-playbook \
             $(Agent.BuildDirectory)/s/src/modules/ubuntu_azdo_agent/build_infrastructure.yml ${{ parameters.ANSIBLE_VERBOSITY_LEVEL }} 
-        displayName: "configuring azdo agent"
+        displayName: "Configuring azdo agent"
         continueOnError: false
         env:
           ANSIBLE_HOST_KEY_CHECKING: false
@@ -83,8 +80,7 @@ jobs:
           DEVOPS_AGENT_PAT : $(DEVOPS-AGENT-PAT)
           STORAGE_STATE_CONTAINER_NAME: $(STORAGE-STATE-CONTAINER-NAME)
           STORAGE_ACCOUNT_NAME: $(STORAGE-ACCOUNT-NAME)
-          TF_VAR_prefix: ${{ parameters.PREFIX }}
-          TF_VAR_resource_group_name: ${{ parameters.RESOURCE_GROUP_NAME }}
-          TF_VAR_resource_group_location: ${{ parameters.RESOURCE_GROUP_LOCATION}}
-          TF_VAR_admin_username: ${{ parameters.ADMIN_USERNAME }}
-          TF_VAR_admin_password: ${{ parameters.ADMIN_PASSWORD }}
+          TF_VAR_prefix: ${{ parameters.prefix }}
+          TF_VAR_location: ${{ parameters.resource_group_location}}
+          TF_VAR_admin_username: ${{ parameters.admin_username }}
+          TF_VAR_admin_password: ${{ parameters.admin_password }}

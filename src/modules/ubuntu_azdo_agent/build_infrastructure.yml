@@ -16,11 +16,10 @@
   - terraform_vars:
       subscription_id: "{{ lookup('env','ARM_SUBSCRIPTION_ID') | mandatory }}"
       prefix: "{{ lookup('env','TF_VAR_prefix') | mandatory }}"
-      resource_group_name: "{{ lookup('env','TF_VAR_resource_group_name') | mandatory }}"
-      resource_group_location: "{{ lookup('env','TF_VAR_resource_group_location') | mandatory }}"
+      location: "{{ lookup('env','TF_VAR_location') | mandatory }}"
       admin_username: "{{ lookup('env','TF_VAR_admin_username') | mandatory }}"
       admin_password: "{{ lookup('env','TF_VAR_admin_password') | mandatory }}"
-      tag_module_id: "{{ 600 | random(seed=41) }}"
+      tag_module_id: "{{ 600 | random() }}"
 
   tasks: 
     - name: peek terraform_vars variables
