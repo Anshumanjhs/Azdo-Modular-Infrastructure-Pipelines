@@ -19,7 +19,7 @@
       location: "{{ lookup('env','TF_VAR_location') | mandatory }}"
       admin_username: "{{ lookup('env','TF_VAR_admin_username') | mandatory }}"
       admin_password: "{{ lookup('env','TF_VAR_admin_password') | mandatory }}"
-      tag_module_id: "{{ 600 | random() }}"
+      tag_module_id: "{{ 600 | random(seed=41) }}"
 
   tasks: 
     - name: peek terraform_vars variables
