@@ -1,11 +1,11 @@
-# Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines
+# Azdo-Modular-Infrastructure-Pipelines
 
 ### Main Build Status 
 
 [![Build Status](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_apis/build/status/Pre-provisioning?branchName=main)](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_build/latest?definitionId=36&branchName=main)
 
 ### Staging Build Status 
-[![Build Status](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_apis/build/status/Pre-provisioning?branchName=staging)](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_build/latest?definitionId=36&branchName=staging)
+[![Build Status](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_apis/build/status/staging-pre-provisioning?branchName=staging)](https://dev.azure.com/csebraveheart/Azdo-Modular-Infrastructure-Pipelines/_build/latest?definitionId=38&branchName=staging)
 - ^ *This would be a customer's first edit* 
 
   
@@ -21,7 +21,7 @@ To deploy the solution your team will need an Azure Devops organization an Azure
 
 To add modules to your solution, create a pipeline in Azure Devops and point to the already existing yaml in each module. (prefixed with 'azdo-' as a convention)
 
-We also recommended watching our video for deployment instructions here: [demo video](https://msit.microsoftstream.com/video/2d40a1ff-0400-9fb2-790d-f1eb04dc9df9)
+We also recommended watching our video for deployment instructions here: [private demo video](https://msit.microsoftstream.com/video/2d40a1ff-0400-9fb2-790d-f1eb04dc9df9)
 
 And if you have any questions feel free to reach out directly to the team. 
 

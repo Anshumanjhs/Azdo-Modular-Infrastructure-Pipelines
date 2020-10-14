@@ -8,7 +8,7 @@ pool:
 
 parameters:
   - name: prefix
-    displayName: prefix
+    displayName: prefix (main, staging, or whatever env your targeting is a good prefix)
     default: "core"
   - name: location
     displayName: location
@@ -35,7 +35,7 @@ steps:
     terraformVersion: "0.13.2"
     
 - script: |
-    terraform init -backend-config="storage_account_name=$(STORAGE-ACCOUNT-NAME)" -backend-config="container_name=$(STORAGE-STATE-CONTAINER-NAME)" 
+    terraform init -backend-config="storage_account_name=$(STORAGE-ACCOUNT-NAME)" -backend-config="container_name=$(STORAGE-STATE-CONTAINER-NAME)" -backend-config="key=${{ parameters.prefix }}.preprovisioning.terraform.tfstate"
     terraform validate
   displayName: "Run TF Validate"
   workingDirectory: $(System.DefaultWorkingDirectory)/src/terraform/preprovisioning
