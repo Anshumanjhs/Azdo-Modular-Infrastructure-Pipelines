@@ -15,7 +15,7 @@ parameters:
     default: "westus2"
   - name: ado_project_name
     displayName: ado project name eg.-  MyAzureDevopsProject or Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines
-    default: staging-environment-azdo-samples
+    default: Azdo-Modular-Infrastructure-Pipelines
   - name: ado_org_service_url
     displayName: ado org service url eg.-  https://dev.azure.com/csebraveheart
     default: https://dev.azure.com/csebraveheart
