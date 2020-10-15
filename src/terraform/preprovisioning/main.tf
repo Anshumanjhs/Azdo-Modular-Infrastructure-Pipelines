@@ -40,14 +40,13 @@ resource "azurerm_resource_group" "main" {
 }
 
 #Import azuredevops project via 
-data "azuredevops_projects" "main" {
+data "azuredevops_project" "main" {
   project_name = var.ado_project_name
-  state        = "wellFormed"
 }
 
 #Initialize local variables for azuredevops project_id and web resource naming conventions
 locals {
-  project_id = data.azuredevops_projects.main.projects.*.project_id[0]
+  project_id = data.azuredevops_project.main.id
 
 }
 
@@ -116,4 +115,18 @@ resource "azurerm_application_insights" "main" {
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   application_type    = "web"
+}
+
+
+resource "azuredevops_variable_group" "variablegroup" {
+  project_id   = local.project_id
+  name         = "pipeline-service-connection"
+  description  = "service connection for pipelines"
+  allow_access = true
+
+  variable {
+    name      = "azureSubscriptionEndpoint"
+    value     = azuredevops_serviceendpoint_azurerm.endpointazure.service_endpoint_name
+    is_secret = false
+  }
 }
