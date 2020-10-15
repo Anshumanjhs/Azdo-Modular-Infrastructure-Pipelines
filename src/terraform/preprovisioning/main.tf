@@ -46,7 +46,7 @@ data "azuredevops_project" "main" {
 
 #Initialize local variables for azuredevops project_id and web resource naming conventions
 locals {
-  project_id = data.azuredevops_projects.main.project.id
+  project_id = data.azuredevops_projects.main.id
 
 }
 
