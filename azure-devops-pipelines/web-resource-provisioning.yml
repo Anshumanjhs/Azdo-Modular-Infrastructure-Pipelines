@@ -13,6 +13,12 @@ parameters:
   - name: location
     displayName: location
     default: "westus2"
+  - name: ado_project_name
+    displayName: ado project name eg.-  MyAzureDevopsProject or Azure-PrivateDevopsAgent-Demos-Ansible-Terraform-Pipelines
+    default: Azdo-Modular-Infrastructure-Pipelines
+  - name: ado_org_service_url
+    displayName: ado org service url eg.-  https://dev.azure.com/csebraveheart
+    default: https://dev.azure.com/csebraveheart
 
 # Using a Variable Group as the Secured Network will be applied post the creation of core 
 variables:
