@@ -117,3 +117,17 @@ resource "azurerm_application_insights" "main" {
   resource_group_name = azurerm_resource_group.main.name
   application_type    = "web"
 }
+
+
+resource "azuredevops_variable_group" "variablegroup" {
+  project_id   = local.project_id
+  name         = "web-api-variables"
+  description  = "Web CI/CD pipeline variables"
+  allow_access = true
+
+  variable {
+    name      = "azureSubscriptionEndpoint"
+    value     = azuredevops_serviceendpoint_azurerm.endpointazure.service_endpoint_name
+    is_secret = false
+  }
+}
