@@ -121,8 +121,8 @@ resource "azurerm_application_insights" "main" {
 
 resource "azuredevops_variable_group" "variablegroup" {
   project_id   = local.project_id
-  name         = "web-api-variables"
-  description  = "Web CI/CD pipeline variables"
+  name         = "pipeline-service-connection"
+  description  = "service connection for pipelines"
   allow_access = true
 
   variable {
