@@ -28,3 +28,15 @@ variable "client_secret" {
   description = "Service Principal Client secret"
   type        = string
 }
+variable "ado_project_name" {
+  description = "AzureDevOps Project Name"
+  type        = string
+}
+variable "service_connection_pat" {
+  description = "AzureDevOps PAT"
+  type        = string
+}
+variable "ado_org_service_url" {
+  description = "AzureDevOps Org Service URL"
+  type        = string
+}
