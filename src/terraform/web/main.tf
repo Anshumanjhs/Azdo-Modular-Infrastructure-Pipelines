@@ -79,4 +79,27 @@ resource "azurerm_app_service" "api" {
   }
 }
 
+resource "azuredevops_variable_group" "variablegroup" {
+  project_id   = local.project_id
+  name         = "web-api-variables"
+  description  = "Web CI/CD pipeline variables"
+  allow_access = true
+
+  variable {
+    name      = "appServiceNameApi"
+    value     = azurerm_app_service.api.name
+    is_secret = false
+  }
+  variable {
+    name      = "azureContainerRegistry"
+    value     = azurerm_container_registry.api.name
+    is_secret = false
+  }
+  variable {
+    name      = "webResourceGroupName"
+    value     = azurerm_resource_group.api.name
+    is_secret = false
+  }
+}
+
 
