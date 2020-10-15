@@ -26,6 +26,17 @@ provider "azurerm" {
 #     upper   = false
 # }
 
+#Import azuredevops project via 
+data "azuredevops_project" "main" {
+  project_name = var.ado_project_name
+}
+
+#Initialize local variables for azuredevops project_id and web resource naming conventions
+locals {
+  project_id = data.azuredevops_project.main.id
+
+}
+
 #Create resource group for web resources
 resource "azurerm_resource_group" "api" {
   name     = "${var.prefix}-web-rg"
