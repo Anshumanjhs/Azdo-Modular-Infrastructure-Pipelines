@@ -11,6 +11,13 @@ provider "azurerm" {
   features{}
 }
 
+#Configure azuredevops provider to point to ADO specified instance
+provider "azuredevops" {
+  version = ">= 0.0.1"
+  personal_access_token = var.service_connection_pat
+  org_service_url = var.ado_org_service_url
+}
+
 #If you would like to add a random string uncomment lines 28-36
 #You will then be able to add a random string to your naming convention 
 #This will be helpful to ensure naming conventions do not overlap
