@@ -6,6 +6,7 @@ pool:
 
 variables:
  - group: web-api-variables
+ - group: pipeline-service-connection
 
 steps:
 - task: AzureCLI@1
@@ -27,6 +28,6 @@ steps:
     azureSubscription: $(azureSubscriptionEndpoint)
     appName: $(appServiceNameApi)
     deployToSlotOrASE: true
-    resourceGroupName: $(resourceGroupName)
+    resourceGroupName: $(webResourceGroupName)
     containers: '$(azureContainerRegistry)/web-api:latest'
     appSettings: '-DOCKER_REGISTRY_SERVER_URL $(registryServerUrl) -DOCKER_REGISTRY_SERVER_USERNAME $(registryUserName) -DOCKER_REGISTRY_SERVER_PASSWORD $(registryPassword) '

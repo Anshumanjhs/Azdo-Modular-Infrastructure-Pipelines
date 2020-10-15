@@ -16,6 +16,7 @@ pool:
 
 variables:
  - group: web-api-variables
+ - group: pipeline-service-connection
 
 steps:
 - task: Docker@1
