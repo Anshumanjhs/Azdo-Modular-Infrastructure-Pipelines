@@ -5,8 +5,6 @@ services:
     build:
       ./ansible
     volumes:
-      - ~/Documents/Automation:/home/ansible/Automation
-      - ~/Code/Azdo-Modular-Infrastructure-Pipelines/:/home/ansible/Solution
       - ./Azdo-Modular-Infrastructure-Pipelines/:/home/ansible/SolutionThree
       - ~/.ssh:/home/ansible/.ssh
       - ~/.gitconfig:/home/ansible/.gitconfig
