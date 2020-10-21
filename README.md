@@ -35,8 +35,6 @@ And if you have any questions feel free to reach out directly to the team.
 
 - Creating a new windows vm with terraform, configuring winrm, and configuring post deployment with ansible: [windows machine ready for config](src/modules/windows_worker)
 
-- Measuring network throughput on the azure backbone with go: [network tests](src/network-tests)
-
 ## Running and Developing Modules
 
 Dependencies: 
@@ -159,6 +157,14 @@ Now you can install ansible or a `requirements.txt` or ansible directly
 ```
 $ pip3 install ansible 
 $ pip3 install -r requirements.txt
+```
+
+## Create service principal for Azure Devops Service Connection using the `az cli` 
+```
+az login
+az account show 
+az account set --subscription "name or id from show above" 
+az ad sp create-for-rbac -n "azdo-module-infra-sp" --role contributor
 ```
 
 # Troubleshooting 
